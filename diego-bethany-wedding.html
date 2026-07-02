@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diego &amp; Bethany — 29 April 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #FBF6EE;
+    --cream-deep: #F3EBDC;
+    --ink: #33361F;
+    --sage: #8FA07C;
+    --sage-deep: #5C6B44;
+    --olive: #6E7A45;
+    --peach: #E7B98D;
+    --terracotta: #C77F52;
+    --mustard: #CFA044;
+    --dusty-blue: #A9C1CE;
+    --line: rgba(51,54,31,0.14);
+    --shadow: 0 20px 60px rgba(94,84,45,0.12);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1,h2,h3, .serif{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  p{ max-width: 62ch; }
+  a{ color: inherit; }
+  img{max-width:100%; display:block;}
+
+  ::selection{ background: var(--peach); color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+
+  /* ---------- Botanical signature SVG (reused as divider) ---------- */
+  .sprig{ width: 120px; height: auto; opacity: 0.85; }
+  .sprig path, .sprig ellipse{ vector-effect: non-scaling-stroke; }
+
+  /* ---------- Nav ---------- */
+  nav{
+    position: fixed; top:0; left:0; right:0; z-index: 100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 5vw;
+    background: rgba(251,246,238,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s var(--ease), padding 0.4s var(--ease);
+  }
+  nav.scrolled{ border-bottom-color: var(--line); padding: 12px 5vw; }
+  .nav-mark{ font-family:'Cormorant Garamond', serif; font-size: 1.4rem; letter-spacing: 0.02em; }
+  .nav-links{ display:flex; gap: clamp(14px, 2vw, 32px); list-style:none; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .nav-links a{ text-decoration:none; position:relative; padding-bottom: 4px; }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background: var(--terracotta);
+    transition: width 0.3s var(--ease);
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-toggle{ display:none; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--ink); }
+
+  @media (max-width: 760px){
+    .nav-links{
+      position:fixed; top:0; right:-100%; height:100vh; width: min(78vw, 320px);
+      background: var(--cream); flex-direction:column; justify-content:center; align-items:flex-start;
+      padding: 40px; gap: 28px; transition: right 0.45s var(--ease); box-shadow: var(--shadow);
+    }
+    .nav-links.open{ right:0; }
+    .nav-toggle{ display:block; z-index: 101; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height: 100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; position:relative; padding: 120px 6vw 60px;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 10%, rgba(143,160,124,0.20), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 85% 90%, rgba(231,185,141,0.28), transparent 60%);
+  }
+  .hero-eyebrow{
+    font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sage-deep);
+    margin-bottom: 22px; opacity:0; animation: rise 0.9s var(--ease) 0.1s forwards;
+  }
+  .hero h1{
+    font-size: clamp(3rem, 9vw, 6rem); line-height: 0.98; letter-spacing: -0.03em;
+    opacity:0; animation: rise 1s var(--ease) 0.25s forwards;
+  }
+  .hero h1 em{ font-style: italic; color: var(--terracotta); }
+  .hero .ampersand{ display:block; font-size: 0.5em; color: var(--sage); margin: 0.05em 0; font-style: italic; }
+  .hero-sub{
+    margin-top: 26px; font-size: 1.05rem; color: var(--sage-deep); letter-spacing: 0.03em;
+    opacity:0; animation: rise 1s var(--ease) 0.45s forwards;
+  }
+  .hero-sprig{ margin-top: 40px; opacity:0; animation: rise 1s var(--ease) 0.6s forwards; }
+
+  @keyframes rise{ from{opacity:0; transform: translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  /* Countdown */
+  .countdown{
+    display:flex; gap: clamp(14px, 3vw, 40px); margin-top: 48px; flex-wrap: wrap; justify-content:center;
+    opacity:0; animation: rise 1s var(--ease) 0.75s forwards;
+  }
+  .countdown .unit{ text-align:center; min-width: 70px; }
+  .countdown .num{ font-family:'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 2.8rem); color: var(--ink); }
+  .countdown .label{ font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-deep); margin-top:4px; }
+
+  .scroll-cue{
+    position:absolute; bottom: 34px; left:50%; transform: translateX(-50%);
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage-deep);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue .line{ width:1px; height: 34px; background: var(--sage-deep); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:0.3; } 50%{ opacity:1; } }
+
+  /* ---------- Sections ---------- */
+  section{ padding: 110px 6vw; position:relative; }
+  .section-inner{ max-width: 1080px; margin: 0 auto; }
+  .divider{ display:flex; justify-content:center; margin: 0 0 60px; }
+
+  .eyebrow{
+    font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta);
+    margin-bottom: 14px; display:block;
+  }
+  .section-title{ font-size: clamp(2.2rem, 4.5vw, 3.2rem); margin-bottom: 28px; text-wrap: balance; }
+
+  .reveal{ opacity:0; transform: translateY(28px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+
+  /* ---------- Our Story ---------- */
+  #story{ background: var(--cream-deep); }
+  .story-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 90px); align-items:center; }
+  .story-copy p{ margin-bottom: 20px; font-size: 1.05rem; }
+  .story-copy p:last-child{ margin-bottom:0; }
+  .story-visual{
+    aspect-ratio: 4/5; border-radius: 4px; background: linear-gradient(160deg, var(--sage) 0%, var(--dusty-blue) 100%);
+    position:relative; overflow:hidden; box-shadow: var(--shadow);
+  }
+  .story-visual::after{
+    content:'Photo to come'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color: rgba(255,255,255,0.85); font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.2rem;
+    background: rgba(51,54,31,0.15);
+  }
+  .story-milestones{ margin-top: 34px; display:flex; flex-direction:column; gap: 18px; }
+  .milestone{ display:flex; gap: 18px; align-items:baseline; }
+  .milestone .date{ font-family:'Cormorant Garamond', serif; font-size:1.1rem; color: var(--terracotta); min-width: 130px; }
+  .milestone .desc{ font-size: 0.95rem; color: var(--ink); opacity: 0.85; }
+
+  @media (max-width: 820px){ .story-grid{ grid-template-columns: 1fr; } .story-visual{ order:-1; } }
+
+  /* ---------- Event Details ---------- */
+  .schedule{ display:flex; flex-direction:column; margin-top: 20px; }
+  .schedule-item{
+    display:grid; grid-template-columns: 130px 1fr; gap: 24px; padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .schedule-item:last-child{ border-bottom: 1px solid var(--line); }
+  .schedule-time{ font-family:'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--sage-deep); }
+  .schedule-name{ font-size: 1.15rem; margin-bottom: 6px; font-family:'Cormorant Garamond', serif; font-weight:600; }
+  .schedule-desc{ font-size: 0.92rem; opacity: 0.75; max-width: 50ch; }
+
+  .venue-card{
+    margin-top: 60px; display:grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items:center;
+    background: var(--cream-deep); border-radius: 6px; padding: 44px; box-shadow: var(--shadow);
+  }
+  .venue-card h3{ font-size: 1.8rem; margin-bottom: 10px; }
+  .dress-code{
+    margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line);
+  }
+  .dress-code .eyebrow{ margin-bottom: 8px; }
+  @media (max-width: 820px){ .venue-card{ grid-template-columns: 1fr; } }
+
+  /* ---------- Travel ---------- */
+  #travel{ background: var(--cream-deep); }
+  .travel-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; margin-top: 40px; }
+  .travel-card{
+    background: var(--cream); padding: 32px; border-radius: 6px; border: 1px solid var(--line);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .travel-card:hover{ transform: translateY(-6px); box-shadow: var(--shadow); }
+  .travel-card h3{ font-size: 1.4rem; margin-bottom: 10px; }
+  .travel-card p{ font-size: 0.92rem; opacity: 0.8; }
+  .travel-card .tag{ display:inline-block; margin-top:14px; font-size: 0.72rem; letter-spacing:0.1em; text-transform:uppercase; color: var(--terracotta); }
+
+  /* ---------- Gallery ---------- */
+  .gallery-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px;
+  }
+  .gallery-item{
+    aspect-ratio: 1; border-radius: 4px; overflow:hidden; position:relative;
+    background: linear-gradient(135deg, var(--peach), var(--terracotta));
+  }
+  .gallery-item:nth-child(3n+2){ background: linear-gradient(135deg, var(--sage), var(--sage-deep)); }
+  .gallery-item:nth-child(3n){ background: linear-gradient(135deg, var(--dusty-blue), var(--mustard)); }
+  .gallery-item::after{
+    content: attr(data-label); position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Cormorant Garamond', serif; font-style:italic; color: rgba(255,255,255,0.9); font-size:0.95rem;
+    background: rgba(51,54,31,0.12); opacity:0; transition: opacity 0.3s var(--ease);
+  }
+  .gallery-item:hover::after{ opacity:1; }
+  @media (max-width: 700px){ .gallery-grid{ grid-template-columns: repeat(2, 1fr); } }
+
+  /* ---------- RSVP ---------- */
+  #rsvp{ background: var(--sage-deep); color: var(--cream); }
+  #rsvp .eyebrow{ color: var(--peach); }
+  #rsvp .section-title{ color: var(--cream); }
+  #rsvp p.lead{ color: rgba(251,246,238,0.85); margin-bottom: 44px; }
+
+  form{ display:grid; gap: 22px; max-width: 640px; }
+  .field{ display:flex; flex-direction:column; gap: 8px; }
+  .field label{ font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--peach); }
+  .field input, .field select, .field textarea{
+    background: rgba(251,246,238,0.08); border: 1px solid rgba(251,246,238,0.3); border-radius: 3px;
+    padding: 13px 16px; color: var(--cream); font-family:'Jost', sans-serif; font-size: 0.98rem;
+    transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  }
+  .field input::placeholder, .field textarea::placeholder{ color: rgba(251,246,238,0.45); }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline: none; border-color: var(--peach); background: rgba(251,246,238,0.14);
+  }
+  .field-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 600px){ .field-row{ grid-template-columns: 1fr; } }
+
+  .submit-btn{
+    justify-self:start; margin-top: 10px; background: var(--peach); color: var(--ink); border:none;
+    padding: 15px 38px; font-family:'Jost', sans-serif; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
+    border-radius: 3px; cursor:pointer; transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+  }
+  .submit-btn:hover{ background: var(--terracotta); color: var(--cream); transform: translateY(-2px); }
+  .submit-btn:focus-visible{ outline: 2px solid var(--cream); outline-offset: 3px; }
+
+  .form-note{
+    margin-top: 22px; font-size: 0.82rem; color: rgba(251,246,238,0.6);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding: 60px 6vw 40px; text-align:center; background: var(--cream);
+  }
+  footer .serif{ font-size: 1.3rem; margin-bottom: 8px; }
+  footer .sub{ font-size: 0.82rem; opacity: 0.6; letter-spacing: 0.05em; }
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--terracotta); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <span class="nav-mark">D &amp; B</span>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#story" data-close>Our Story</a></li>
+    <li><a href="#details" data-close>Event Details</a></li>
+    <li><a href="#travel" data-close>Travel</a></li>
+    <li><a href="#gallery" data-close>Gallery</a></li>
+    <li><a href="#rsvp" data-close>RSVP</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-eyebrow">Together with their families</span>
+  <h1 class="serif">Diego <span class="ampersand">&amp;</span> <em>Bethany</em></h1>
+  <p class="hero-sub">are getting married &middot; 29 April 2027 &middot; Southdowns Manor</p>
+
+  <div class="countdown" id="countdown">
+    <div class="unit"><div class="num" id="cd-days">–</div><div class="label">Days</div></div>
+    <div class="unit"><div class="num" id="cd-hours">–</div><div class="label">Hours</div></div>
+    <div class="unit"><div class="num" id="cd-mins">–</div><div class="label">Minutes</div></div>
+    <div class="unit"><div class="num" id="cd-secs">–</div><div class="label">Seconds</div></div>
+  </div>
+
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+</header>
+
+<!-- OUR STORY -->
+<section id="story">
+  <div class="section-inner">
+    <div class="divider">
+      <svg class="sprig" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 55 C 60 40, 40 30, 20 20" stroke="#6E7A45" stroke-width="1.5"/>
+        <path d="M60 55 C 60 40, 80 30, 100 20" stroke="#6E7A45" stroke-width="1.5"/>
+        <ellipse cx="20" cy="18" rx="7" ry="4" fill="#E7B98D" transform="rotate(-30 20 18)"/>
+        <ellipse cx="100" cy="18" rx="7" ry="4" fill="#E7B98D" transform="rotate(30 100 18)"/>
+        <ellipse cx="60" cy="10" rx="6" ry="9" fill="#C77F52"/>
+      </svg>
+    </div>
+    <div class="story-grid">
+      <div class="story-copy reveal">
+        <span class="eyebrow">Our Story</span>
+        <h2 class="section-title serif">How it began</h2>
+        <p>We met in our first year of university, right in the middle of Covid. Bethany offered to help Diego with some coursework — and that was that.</p>
+        <p>Years later, on our very first cruise together, sailing through Iceland and the Norwegian Fjords, Diego proposed on the 22nd of May, 2025. We said yes to forever somewhere between the glaciers and the fjords, and we can't wait to celebrate with the people who mean the most to us.</p>
+        <div class="story-milestones">
+          <div class="milestone"><span class="date">Covid, Year One</span><span class="desc">We met at university — Bethany lent a hand, and everything followed from there.</span></div>
+          <div class="milestone"><span class="date">22 May 2025</span><span class="desc">Engaged in the Norwegian Fjords, on our first cruise together.</span></div>
+          <div class="milestone"><span class="date">29 April 2027</span><span class="desc">We say "I do" at Southdowns Manor.</span></div>
+        </div>
+      </div>
+      <div class="story-visual reveal"></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT DETAILS -->
+<section id="details">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">Event Details</span>
+      <h2 class="section-title serif">The Day</h2>
+      <p>Here's how the day will unfold. Times are approximate for now and will be confirmed closer to the date.</p>
+    </div>
+
+    <div class="schedule reveal">
+      <div class="schedule-item">
+        <div class="schedule-time">~1:30 PM</div>
+        <div><div class="schedule-name">Ceremony</div><div class="schedule-desc">We say our vows at Southdowns Manor. Please arrive with time to be seated.</div></div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~3–4 PM</div>
+        <div><div class="schedule-name">Wedding Breakfast</div><div class="schedule-desc">Drinks, canapés, and the wedding breakfast for our ceremony guests.</div></div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">~7 PM</div>
+        <div><div class="schedule-name">Evening Reception</div><div class="schedule-desc">Evening guests join us for dancing and celebrating into the night.</div></div>
+      </div>
+    </div>
+
+    <div class="venue-card reveal">
+      <div>
+        <span class="eyebrow">Venue</span>
+        <h3 class="serif">Southdowns Manor</h3>
+        <p>A countryside manor set in the Hampshire hills — full address and directions to follow closer to the date.</p>
+        <div class="dress-code">
+          <span class="eyebrow">Dress Code</span>
+          <p>Garden formal. Think light suits and floral, flowing dresses in soft, warm tones — details to follow.</p>
+        </div>
+      </div>
+      <div class="story-visual" style="aspect-ratio: 4/3;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL -->
+<section id="travel">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">Travel &amp; Stay</span>
+      <h2 class="section-title serif">Getting There</h2>
+      <p>We're still gathering recommendations for places to stay near Southdowns Manor — this section will fill in as we confirm details.</p>
+    </div>
+    <div class="travel-grid reveal">
+      <div class="travel-card"><h3 class="serif">By Car</h3><p>Parking details and directions from major routes will be added here.</p><span class="tag">Coming soon</span></div>
+      <div class="travel-card"><h3 class="serif">Nearby Stays</h3><p>Recommended hotels and B&amp;Bs close to the venue will be listed here.</p><span class="tag">Coming soon</span></div>
+      <div class="travel-card"><h3 class="serif">Public Transport</h3><p>Nearest train stations and taxi info will be added closer to the date.</p><span class="tag">Coming soon</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">Gallery</span>
+      <h2 class="section-title serif">A Few Moments</h2>
+      <p>Photos to come — this is where we'll share pictures from our story and, eventually, the big day itself.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item" data-label="Our Story"></div>
+      <div class="gallery-item" data-label="The Proposal"></div>
+      <div class="gallery-item" data-label="Together"></div>
+      <div class="gallery-item" data-label="Fjords"></div>
+      <div class="gallery-item" data-label="Family"></div>
+      <div class="gallery-item" data-label="Friends"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section id="rsvp">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">RSVP</span>
+      <h2 class="section-title serif">Let Us Know You're Coming</h2>
+      <p class="lead">Please respond by [RSVP deadline to come]. We can't wait to celebrate with you.</p>
+    </div>
+    <form class="reveal" onsubmit="handleRSVP(event)">
+      <div class="field-row">
+        <div class="field"><label for="name">Full Name</label><input id="name" type="text" placeholder="Your name" required></div>
+        <div class="field"><label for="attending">Attending?</label>
+          <select id="attending"><option>Joyfully accepts</option><option>Regretfully declines</option></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="guests">Number of Guests</label><input id="guests" type="number" min="1" max="4" value="1"></div>
+        <div class="field"><label for="dietary">Dietary Requirements</label><input id="dietary" type="text" placeholder="e.g. vegetarian, allergies"></div>
+      </div>
+      <div class="field"><label for="message">Message for the Couple</label><textarea id="message" rows="4" placeholder="Say hello, or a song request..."></textarea></div>
+      <button class="submit-btn" type="submit">Send RSVP</button>
+    </form>
+    <p class="form-note" id="formNote">This form is a preview — once the site is live, responses will be collected automatically.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="serif">Diego &amp; Bethany</div>
+  <div class="sub">29 April 2027 &middot; Southdowns Manor</div>
+</footer>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive:true });
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('[data-close]').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Countdown to 29 April 2027, 13:30 local
+  const weddingDate = new Date('2027-04-29T13:30:00');
+  function updateCountdown(){
+    const now = new Date();
+    let diff = weddingDate - now;
+    if(diff < 0) diff = 0;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = d;
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // RSVP form (placeholder — swap for Formspree/Netlify Forms once hosted)
+  function handleRSVP(e){
+    e.preventDefault();
+    document.getElementById('formNote').textContent = 'Thank you — your RSVP has been noted (preview mode).';
+    e.target.reset();
+  }
+</script>
+
+</body>
+</html>
