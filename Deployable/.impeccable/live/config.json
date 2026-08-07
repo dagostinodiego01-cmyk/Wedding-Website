@@ -1,0 +1,6 @@
+{
+  "files": ["diego-bethany-wedding.html"],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}
